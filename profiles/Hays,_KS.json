@@ -1,0 +1,41 @@
+{
+  "name": "Hays, KS",
+  "unit": "ft",
+  "interval": 1,
+  "max_plausible_value": 5000.0,
+  "fields": {
+    "footage": {
+      "crop": [
+        261,
+        448,
+        197,
+        33
+      ]
+    },
+    "date": {
+      "crop": [
+        -1,
+        455,
+        233,
+        28
+      ]
+    },
+    "pipe_id": {
+      "crop": [
+        34,
+        73,
+        306,
+        67
+      ]
+    }
+  },
+  "fingerprint": {
+    "region": [
+      0,
+      0,
+      300,
+      120
+    ],
+    "hash": "fe83837d5a6d8130"
+  }
+}
