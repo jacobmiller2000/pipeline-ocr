@@ -52,7 +52,7 @@ def process_video(video_path: Path, ocr, profile: dict | None, interval: int) ->
         return result
 
     # Determine effective interval and field crops
-    eff_interval = interval or (profile.get("interval", 5) if profile else 5)
+    eff_interval = interval if interval is not None else (profile.get("interval", 0) if profile else 0)
     max_plausible = profile.get("max_plausible_value", 5000) if profile else 5000
     result["profile_used"] = profile.get("name", "") if profile else "full-frame fallback"
 
@@ -65,7 +65,7 @@ def process_video(video_path: Path, ocr, profile: dict | None, interval: int) ->
     all_dates: list[str | None] = []
     all_pipe_ids: list[str | None] = []
 
-    timestamps = vid.sample_frame_timestamps(duration, eff_interval)
+    timestamps = vid.sample_frame_timestamps(duration, eff_interval, video_path)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         for ts in timestamps:
@@ -110,7 +110,7 @@ def main():
     ap.add_argument("--output", default="results.csv", help="Output CSV path (default: results.csv)")
     ap.add_argument("--profile", default=None, help="Force a specific profile by name (skip auto-detect)")
     ap.add_argument("--interval", type=int, default=0,
-                    help="Frame sampling interval in seconds (default: from profile or 5)")
+                    help="Frame sampling interval in seconds. 0 = every frame (default)")
     ap.add_argument("--gpu", action="store_true", help="Use GPU for OCR")
     ap.add_argument("--no-fallback", action="store_true",
                     help="Skip videos with no matching profile instead of using full-frame fallback")

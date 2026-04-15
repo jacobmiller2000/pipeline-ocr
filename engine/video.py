@@ -24,6 +24,26 @@ def get_duration(video_path: str | Path) -> float | None:
         return None
 
 
+def get_fps(video_path: str | Path) -> float:
+    """Return the frame rate of the video. Falls back to 30 if undetectable."""
+    result = subprocess.run(
+        [
+            "ffprobe", "-v", "error",
+            "-select_streams", "v:0",
+            "-show_entries", "stream=r_frame_rate",
+            "-of", "default=noprint_wrappers=1:nokey=1",
+            str(video_path),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    try:
+        num, den = result.stdout.strip().split("/")
+        return float(num) / float(den)
+    except Exception:
+        return 30.0
+
+
 def extract_frame(video_path: str | Path, timestamp: float, output_path: str | Path) -> bool:
     """
     Extract a single frame at the given timestamp (seconds) to output_path.
@@ -43,13 +63,24 @@ def extract_frame(video_path: str | Path, timestamp: float, output_path: str | P
     return result.returncode == 0 and Path(output_path).exists()
 
 
-def sample_frame_timestamps(duration: float, interval: int) -> list[float]:
+def sample_frame_timestamps(duration: float, interval: int, video_path: str | Path | None = None) -> list[float]:
     """
-    Return a list of timestamps (in seconds) spaced `interval` seconds apart,
-    covering the full video duration.
+    Return a list of timestamps (in seconds) covering the full video duration.
+    interval=0 means every frame (uses the video's actual fps).
     """
     if duration <= 0:
         return [0.0]
+
+    if interval == 0:
+        fps = get_fps(video_path) if video_path else 30.0
+        step = 1.0 / fps
+        timestamps = []
+        t = 0.0
+        while t < duration:
+            timestamps.append(round(t, 4))
+            t += step
+        return timestamps
+
     timestamps = list(range(0, int(duration), interval))
     if not timestamps:
         timestamps = [0]

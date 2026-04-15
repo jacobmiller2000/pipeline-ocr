@@ -1,7 +1,7 @@
 {
   "name": "Augusta, KS",
   "unit": "ft",
-  "interval": 1,
+  "interval": 0,
   "max_plausible_value": 1200.0,
   "fields": {
     "footage": {
