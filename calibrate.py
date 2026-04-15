@@ -134,7 +134,7 @@ class CalibrateApp:
         tk.Label(sidebar, text="OCR Preview", font=("TkDefaultFont", 11, "bold")).pack(anchor=tk.W)
         tk.Button(sidebar, text="Test OCR on crops", command=self._preview_ocr).pack(anchor=tk.W, pady=4)
         self.preview_text = tk.Text(sidebar, height=8, width=28, state=tk.DISABLED,
-                                     font=("TkFixedFont", 9), bg="#f5f5f5")
+                                     font=("TkFixedFont", 9), bg="#f5f5f5", fg="black")
         self.preview_text.pack(fill=tk.X)
 
         ttk.Separator(sidebar).pack(fill=tk.X, pady=8)

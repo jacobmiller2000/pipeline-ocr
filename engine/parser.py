@@ -21,8 +21,13 @@ def parse_footage(texts: list[str]) -> list[tuple[float, str]]:
     """
     Parse all footage/distance readings from a list of OCR text strings.
     Returns a list of (value, unit) tuples where unit is 'ft' or 'm'.
+
+    Also handles cases where the number and unit are on separate lines
+    (e.g. OCR returns ['3.84', 'ft'] as two separate strings).
     """
     readings = []
+
+    # Pass 1: parse each line individually
     for text in texts:
         for match in _FOOTAGE_RE.finditer(text):
             try:
@@ -32,6 +37,21 @@ def parse_footage(texts: list[str]) -> list[tuple[float, str]]:
             raw_unit = match.group("unit").lower()
             unit = "m" if raw_unit.startswith("m") else "ft"
             readings.append((value, unit))
+
+    # Pass 2: join adjacent pairs and re-parse (catches split "3.84" / "ft")
+    for i in range(len(texts) - 1):
+        joined = texts[i].strip() + " " + texts[i + 1].strip()
+        for match in _FOOTAGE_RE.finditer(joined):
+            try:
+                value = float(match.group(1))
+            except ValueError:
+                continue
+            raw_unit = match.group("unit").lower()
+            unit = "m" if raw_unit.startswith("m") else "ft"
+            pair = (value, unit)
+            if pair not in readings:
+                readings.append(pair)
+
     return readings
 
 
