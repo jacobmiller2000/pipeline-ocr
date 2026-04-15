@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.env
+venv/
+.venv/
+
+# OCR model cache (large, downloaded automatically on first run)
+.paddleocr/
+inference/
+
+# Output files
+*.csv
+*.srt
+
+# Temp frames
+tmp/
+*.tmp.jpg
+*.tmp.png
+
+# OS
+.DS_Store
+Thumbs.db

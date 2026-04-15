@@ -1,0 +1,6 @@
+paddleocr>=2.7.0
+paddlepaddle>=2.6.0
+# For GPU support, replace paddlepaddle with:
+# paddlepaddle-gpu>=2.6.0
+pillow>=9.0.0
+imagehash>=4.3.1

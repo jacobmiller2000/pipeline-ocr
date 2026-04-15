@@ -1,0 +1,20 @@
+{
+  "_comment": "This is a template. Copy it or use calibrate.py to generate real profiles.",
+  "name": "Example Equipment Name",
+  "unit": "ft",
+  "interval": 5,
+  "max_plausible_value": 5000,
+  "fields": {
+    "footage": {
+      "crop": [0, 820, 380, 70]
+    },
+    "date": {
+      "crop": [1500, 20, 300, 50]
+    },
+    "pipe_id": null
+  },
+  "fingerprint": {
+    "region": [0, 0, 300, 120],
+    "hash": "REPLACE_WITH_HASH_FROM_CALIBRATE"
+  }
+}
